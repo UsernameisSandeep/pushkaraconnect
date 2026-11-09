@@ -1,0 +1,18 @@
+{
+  "name": "pushkaraconnect",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Smart Pilgrim Assistance Platform for Godavari Pushkaralu 2027",
+  "workspaces": [
+    "apps/web",
+    "apps/api"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev --workspace=@pushkaraconnect/api\" \"npm run dev --workspace=@pushkaraconnect/web\"",
+    "dev:web": "npm run dev --workspace=@pushkaraconnect/web",
+    "dev:api": "npm run dev --workspace=@pushkaraconnect/api"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
