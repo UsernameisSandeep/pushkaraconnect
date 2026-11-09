@@ -1,13 +1,6 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
-const researchLocations = [
-  { id: "ap-rajahmundry", name: "Rajamahendravaram", district: "East Godavari", state: "Andhra Pradesh", note: "Godavari riverfront area", status: "Research candidate" },
-  { id: "ap-kovvur", name: "Kovvur", district: "East Godavari", state: "Andhra Pradesh", note: "Godavari riverfront area", status: "Research candidate" },
-  { id: "ap-pattiseema", name: "Pattiseema", district: "Polavaram", state: "Andhra Pradesh", note: "Godavari river area", status: "Research candidate" },
-  { id: "ts-basara", name: "Basara", district: "Nirmal", state: "Telangana", note: "Godavari river area", status: "Research candidate" },
-  { id: "ts-dharmapuri", name: "Dharmapuri", district: "Jagtial", state: "Telangana", note: "Godavari river area", status: "Research candidate" },
-  { id: "ts-bhadrachalam", name: "Bhadrachalam", district: "Bhadradri Kothagudem", state: "Telangana", note: "Godavari river area", status: "Research candidate" },
-];
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:4000";
 
 const features = [
   { number: "01", title: "Explore locations", description: "Discover places being researched for the pilgrim information directory.", icon: "⌖" },
@@ -17,12 +10,40 @@ const features = [
 ];
 
 function App() {
+  const [locations, setLocations] = useState([]);
   const [search, setSearch] = useState("");
   const [stateFilter, setStateFilter] = useState("All");
-  const filteredLocations = useMemo(() => researchLocations.filter((place) => {
-    const matchesSearch = `${place.name} ${place.district} ${place.state}`.toLowerCase().includes(search.toLowerCase());
-    return matchesSearch && (stateFilter === "All" || place.state === stateFilter);
-  }), [search, stateFilter]);
+  const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState("");
+  const [dataSource, setDataSource] = useState("");
+
+  useEffect(() => {
+    const controller = new AbortController();
+    async function loadLocations() {
+      try {
+        setLoading(true);
+        setLoadError("");
+        const response = await fetch(`${API_URL}/api/locations`, { signal: controller.signal });
+        if (!response.ok) throw new Error("The locations service returned an error.");
+        const result = await response.json();
+        setLocations(result.data || []);
+        setDataSource(result.meta?.source || "");
+      } catch (error) {
+        if (error.name !== "AbortError") setLoadError("We couldn't load the location directory. Please check that the API server is running.");
+      } finally {
+        if (!controller.signal.aborted) setLoading(false);
+      }
+    }
+    loadLocations();
+    return () => controller.abort();
+  }, []);
+
+  const filteredLocations = useMemo(() => locations.filter((place) => {
+    const searchable = `${place.name} ${place.district} ${place.state}`.toLowerCase();
+    return searchable.includes(search.toLowerCase()) && (stateFilter === "All" || place.state === stateFilter);
+  }), [locations, search, stateFilter]);
+
+  const displayStatus = (status) => status === "RESEARCH_CANDIDATE" ? "Research candidate" : status.replaceAll("_", " ").toLowerCase();
 
   return <main>
     <nav className="nav container" aria-label="Main navigation">
@@ -53,15 +74,18 @@ function App() {
       <div className="directory-controls">
         <label className="search-box"><span>⌕</span><input value={search} onChange={(event) => setSearch(event.target.value)} placeholder="Search place, district or state..." aria-label="Search locations" /></label>
         <div className="filter-buttons" aria-label="Filter by state">
-          {["All", "Andhra Pradesh", "Telangana"].map((state) => <button key={state} className={stateFilter === state ? "filter-button active" : "filter-button"} onClick={() => setStateFilter(state)}>{state === "Andhra Pradesh" ? "Andhra Pradesh" : state}</button>)}
+          {["All", "Andhra Pradesh", "Telangana"].map((state) => <button key={state} className={stateFilter === state ? "filter-button active" : "filter-button"} onClick={() => setStateFilter(state)}>{state}</button>)}
         </div>
       </div>
-      <div className="location-grid">{filteredLocations.map((place) => <article className="location-card" key={place.id}>
-        <div className="location-card-top"><span className="location-pin">⌖</span><span className="status-pill">{place.status}</span></div>
+      {loading && <p className="empty-state">Loading locations from the PushkaraConnect API…</p>}
+      {loadError && <p className="empty-state" role="alert">{loadError}</p>}
+      {!loading && !loadError && <div className="directory-source">Directory source: {dataSource === "postgresql" ? "PostgreSQL database" : "API sample records — database not connected yet"}</div>}
+      {!loading && !loadError && <div className="location-grid">{filteredLocations.map((place) => <article className="location-card" key={place.id}>
+        <div className="location-card-top"><span className="location-pin">⌖</span><span className="status-pill">{displayStatus(place.status)}</span></div>
         <h3>{place.name}</h3><p className="location-district">{place.district} · {place.state}</p><p className="location-note">{place.note}</p>
         <div className="location-card-footer">Verification pending <span>↗</span></div>
-      </article>)}</div>
-      {filteredLocations.length === 0 && <p className="empty-state">No matching places. Try another search or state filter.</p>}
+      </article>)}</div>}
+      {!loading && !loadError && filteredLocations.length === 0 && <p className="empty-state">No matching places. Try another search or state filter.</p>}
     </div></section>
 
     <section className="about-section container" id="about"><div className="about-mark">P.</div><div><div className="eyebrow">OUR PURPOSE</div><h2>Technology that helps<br /><em>people come together.</em></h2><p>PushkaraConnect is an independent project in development. Public information will be published only after its source and verification status are checked. It is not an official government service.</p></div></section>
