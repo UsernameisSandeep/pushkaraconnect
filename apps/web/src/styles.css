@@ -38,3 +38,5 @@
 .empty-state{padding:30px;text-align:center;color:var(--muted);font-size:13px}
 @media(max-width:800px){.directory-controls{align-items:stretch;flex-direction:column}.search-box{width:100%}.location-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:460px){.directory-heading{align-items:flex-start;flex-direction:column}.location-grid{grid-template-columns:1fr}.filter-buttons{display:grid;grid-template-columns:repeat(3,1fr)}.filter-button{padding:10px 5px;font-size:10px}}
+
+.directory-source{margin:-8px 0 18px;color:#858b80;font-size:10px;letter-spacing:.2px}
