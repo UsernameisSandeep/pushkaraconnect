@@ -8,3 +8,33 @@
 .about-section{display:grid;grid-template-columns:150px 1fr;gap:55px;align-items:center;padding-top:95px;padding-bottom:95px}.about-mark{width:120px;height:120px;display:grid;place-items:center;background:var(--green);color:#f6e8cd;font-family:'Playfair Display',serif;font-size:58px;border-radius:50% 50% 50% 8px}.about-section p{max-width:620px;color:var(--muted);font-size:13px;line-height:1.9}.footer{min-height:85px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid #e5e0d5;color:#8b9087;font-size:10px}
 @media(max-width:800px){.container{width:min(100% - 36px,600px)}.nav{height:72px}.nav-links{gap:14px;font-size:11px}.nav-links>a:first-child{display:none}.hero{grid-template-columns:1fr;gap:35px;padding-top:55px}.hero-art{height:340px}.section-heading{display:block}.section-heading>p{margin-top:20px}.feature-grid{grid-template-columns:repeat(2,1fr)}.about-section{grid-template-columns:1fr;gap:28px}}
 @media(max-width:460px){.nav-links{gap:10px}.nav-cta{padding:10px}.hero-actions{align-items:flex-start;flex-direction:column;gap:18px}.feature-grid{grid-template-columns:1fr}.footer{align-items:flex-start;flex-direction:column;justify-content:center;gap:12px;padding:20px 0}}
+
+
+/* Godavari location research directory */
+.directory-section{padding:88px 0 96px;background:#f7f4ed}
+.directory-heading{display:flex;align-items:end;justify-content:space-between;gap:24px;margin-bottom:28px}
+.directory-heading h2{margin-top:14px}
+.directory-heading p{color:var(--muted);font-size:13px;line-height:1.7;margin:14px 0 0}
+.directory-count{white-space:nowrap;color:var(--green);font-size:12px;border:1px solid #d7ddd3;padding:10px 14px;border-radius:3px}
+.directory-notice{padding:15px 18px;margin:26px 0;background:#f1eadb;border-left:3px solid var(--orange);color:#6f695c;font-size:12px;line-height:1.7}
+.directory-notice strong{color:#4c5148}
+.directory-controls{display:flex;align-items:center;justify-content:space-between;gap:18px;margin:28px 0 22px}
+.search-box{display:flex;align-items:center;gap:10px;width:min(420px,100%);padding:0 14px;background:#fff;border:1px solid #e2e0d7;color:#7e877c}
+.search-box span{font-size:23px}
+.search-box input{width:100%;height:46px;border:0;outline:0;background:transparent;color:#263b34;font:inherit;font-size:12px}
+.filter-buttons{display:flex;gap:8px;flex-wrap:wrap}
+.filter-button{padding:11px 13px;border:1px solid #d9ddd4;border-radius:3px;background:transparent;color:#68736a;font:inherit;font-size:11px;cursor:pointer}
+.filter-button.active{background:var(--green);border-color:var(--green);color:white}
+.location-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.location-card{padding:21px;background:#fff;border:1px solid #e8e5dc;min-height:195px}
+.location-card-top{display:flex;justify-content:space-between;align-items:center}
+.location-pin{color:var(--orange);font-size:22px}
+.status-pill{padding:5px 8px;border-radius:2px;background:#f3eee3;color:#8a704b;font-size:9px;letter-spacing:.2px}
+.location-card h3{margin:21px 0 5px;font-family:'Playfair Display',serif;font-size:22px;font-weight:500;color:#263b34}
+.location-district{margin:0;color:#70796f;font-size:11px}
+.location-note{margin:13px 0;color:#999b91;font-size:11px}
+.location-card-footer{display:flex;justify-content:space-between;align-items:center;padding-top:13px;border-top:1px solid #efede6;color:#a17855;font-size:10px}
+.location-card-footer span{color:var(--green);font-size:15px}
+.empty-state{padding:30px;text-align:center;color:var(--muted);font-size:13px}
+@media(max-width:800px){.directory-controls{align-items:stretch;flex-direction:column}.search-box{width:100%}.location-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:460px){.directory-heading{align-items:flex-start;flex-direction:column}.location-grid{grid-template-columns:1fr}.filter-buttons{display:grid;grid-template-columns:repeat(3,1fr)}.filter-button{padding:10px 5px;font-size:10px}}
