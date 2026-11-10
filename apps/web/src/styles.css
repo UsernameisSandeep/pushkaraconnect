@@ -40,3 +40,24 @@
 @media(max-width:460px){.directory-heading{align-items:flex-start;flex-direction:column}.location-grid{grid-template-columns:1fr}.filter-buttons{display:grid;grid-template-columns:repeat(3,1fr)}.filter-button{padding:10px 5px;font-size:10px}}
 
 .directory-source{margin:-8px 0 18px;color:#858b80;font-size:10px;letter-spacing:.2px}
+
+
+/* Location details dialog */
+.location-card-footer{width:100%;border:0;background:transparent;text-align:left;cursor:pointer;font:inherit}
+.location-card-footer:hover{color:var(--green)}
+.detail-backdrop{position:fixed;inset:0;z-index:20;display:grid;place-items:center;padding:22px;background:rgba(24,35,30,.58)}
+.location-detail{width:min(520px,100%);max-height:min(86vh,760px);overflow:auto;padding:30px;background:#fbfaf6;border:1px solid #e6e1d5;box-shadow:0 24px 80px rgba(0,0,0,.2)}
+.detail-topline{display:flex;align-items:center;justify-content:space-between}
+.detail-close{width:34px;height:34px;border:1px solid #dedbd1;background:transparent;color:var(--green);font-size:24px;cursor:pointer}
+.location-detail h3{margin:24px 0 6px;font-family:'Playfair Display',serif;font-size:34px;font-weight:500;color:#263b34}
+.detail-location{margin:0 0 22px;color:var(--muted);font-size:13px}
+.detail-status{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 0;border-top:1px solid #e9e5dc;border-bottom:1px solid #e9e5dc;font-size:12px}
+.detail-status span,.detail-field>span{color:#8b8e83}
+.detail-status strong{color:#8a704b;font-weight:600;text-align:right}
+.detail-field{padding:16px 0 4px}
+.detail-field>span{font-size:10px;letter-spacing:1px;text-transform:uppercase}
+.detail-field p{margin:7px 0;color:#505b52;font-size:13px;line-height:1.7}
+.detail-field a{color:var(--green);text-decoration:underline;text-underline-offset:3px}
+.detail-disclaimer{margin:18px 0;padding:13px;background:#f1eadb;border-left:3px solid var(--orange);color:#6f695c;font-size:11px;line-height:1.7}
+.detail-done{width:100%;padding:13px;border:0;background:var(--green);color:white;font:inherit;font-size:12px;cursor:pointer}
+@media(max-width:460px){.location-detail{padding:22px}.location-detail h3{font-size:29px}}
