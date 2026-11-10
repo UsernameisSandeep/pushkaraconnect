@@ -16,6 +16,7 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState("");
   const [dataSource, setDataSource] = useState("");
+  const [selectedLocation, setSelectedLocation] = useState(null);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -83,8 +84,21 @@ function App() {
       {!loading && !loadError && <div className="location-grid">{filteredLocations.map((place) => <article className="location-card" key={place.id}>
         <div className="location-card-top"><span className="location-pin">⌖</span><span className="status-pill">{displayStatus(place.status)}</span></div>
         <h3>{place.name}</h3><p className="location-district">{place.district} · {place.state}</p><p className="location-note">{place.note}</p>
-        <div className="location-card-footer">Verification pending <span>↗</span></div>
+        <button type="button" className="location-card-footer" onClick={() => setSelectedLocation(place)}>View details <span>↗</span></button>
       </article>)}</div>}
+      {selectedLocation && <div className="detail-backdrop" onClick={(event) => { if (event.target === event.currentTarget) setSelectedLocation(null); }}>
+        <section className="location-detail" role="dialog" aria-modal="true" aria-labelledby="location-detail-title">
+          <div className="detail-topline"><span className="eyebrow">LOCATION INFORMATION</span><button type="button" className="detail-close" onClick={() => setSelectedLocation(null)} aria-label="Close location details">×</button></div>
+          <h3 id="location-detail-title">{selectedLocation.name}</h3>
+          <p className="detail-location">{selectedLocation.district} · {selectedLocation.state}</p>
+          <div className="detail-status"><span>Research status</span><strong>{displayStatus(selectedLocation.verification_status || selectedLocation.status || "RESEARCH_CANDIDATE")}</strong></div>
+          <div className="detail-field"><span>About this location</span><p>{selectedLocation.note || "No additional description has been added yet."}</p></div>
+          <div className="detail-field"><span>Verification</span><p>{selectedLocation.verified_at ? `Last verified: ${new Date(selectedLocation.verified_at).toLocaleDateString("en-IN")}` : "Not yet verified by the project team."}</p></div>
+          <div className="detail-field"><span>Information source</span><p>{selectedLocation.source_url ? <a href={selectedLocation.source_url} target="_blank" rel="noreferrer">Open source reference ↗</a> : "No source reference has been added yet."}</p></div>
+          <p className="detail-disclaimer">This is a research candidate, not confirmation of an officially designated bathing ghat. Please follow current instructions from the relevant authorities.</p>
+          <button type="button" className="detail-done" onClick={() => setSelectedLocation(null)}>Close details</button>
+        </section>
+      </div>}
       {!loading && !loadError && filteredLocations.length === 0 && <p className="empty-state">No matching places. Try another search or state filter.</p>}
     </div></section>
 
